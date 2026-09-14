@@ -21,11 +21,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maplibre/maputnik"
+    "url": "https://github.com/marucjmar/maputnik-inline-plugin"
   },
-  "author": "Lukas Martinelli",
+  "author": "Marcin",
   "license": "MIT",
-  "homepage": "https://github.com/maplibre/maputnik#readme",
+  "homepage": "https://github.com/marucjmar/maputnik-inline-plugin#readme",
   "dependencies": {
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/lint": "^6.9.7",
