@@ -38,7 +38,7 @@ i18n
     saveMissing: true, // this needs to be set for missingKeyHandler to work
     fallbackLng: false, // we set the fallback to false so we can get the correct language in the missingKeyHandler
     missingKeyHandler: (lngs, _ns, key) => {
-      if (lngs[0] === "en") { return; }
+      if (!lngs[0] || lngs[0] === "en") { return; }
       console.warn(`Missing translation for "${key}" in "${lngs.join(", ")}"`);
     }
   });

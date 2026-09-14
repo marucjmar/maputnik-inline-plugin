@@ -3204,7 +3204,7 @@ Te.use(Ye).use(Qe((e, t) => e === "en" ? {} : f(/* #__PURE__ */ Object.assign({
 	saveMissing: !0,
 	fallbackLng: !1,
 	missingKeyHandler: (e, t, n) => {
-		e[0] !== "en" && console.warn(`Missing translation for "${n}" in "${e.join(", ")}"`);
+		e[0] && e[0] !== "en" && console.warn(`Missing translation for "${n}" in "${e.join(", ")}"`);
 	}
 });
 //#endregion
