@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Layer Editor</title>
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/maplibre-gl@^6.6.0/dist/maplibre-gl.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@^6.6.0/dist/maplibre-gl.css" />
 
-  <link
-    rel="stylesheet"
-    href="./dist/random-picker.css"
-  />
+  <link rel="stylesheet" href="./dist/maputnik-inline.css" />
 
   <style>
     html,
@@ -34,36 +29,37 @@
 
 <body>
 
-    <script type="module" >
-        import * as maplibregl from "https://unpkg.com/maplibre-gl@^6.6.0/dist/maplibre-gl.mjs";
-        import { MaputnikControl } from "./dist/random-picker.js";
+  <script type="module">
+    import * as maplibregl from "https://unpkg.com/maplibre-gl@^6.6.0/dist/maplibre-gl.mjs";
+    import { MaputnikControl } from "./dist/maputnik-inline.js";
 
-        // MapLibre
-        const map = new maplibregl.Map({
-            container: "map",
-            style: "https://tiles.openfreemap.org/styles/liberty",
-            center: [14, 52],
-            zoom: 5,
-        });
+    // MapLibre
+    const map = new maplibregl.Map({
+      container: "map",
+      style: "https://tiles.openfreemap.org/styles/liberty",
+      center: [14, 52],
+      zoom: 5,
+    });
 
-        const styleEditorControl = new MaputnikControl();
-        map.addControl(styleEditorControl, "top-left");
-        
-        map.on('styledata', () => {
-            console.log("Style changed");
-        });
+    const styleEditorControl = new MaputnikControl();
+    map.addControl(styleEditorControl, "top-left");
 
-        // setTimeout(() => {
-        //     map.removeControl(styleEditorControl);
-        // }, 4000);
+    map.on('styledata', () => {
+      console.log("Style changed");
+    });
+
+    // setTimeout(() => {
+    //     map.removeControl(styleEditorControl);
+    // }, 4000);
   </script>
 
   <div id="map"></div>
 
-<script>
-  window.process = {
-    env: {}
-  };
-</script>
+  <script>
+    window.process = {
+      env: {}
+    };
+  </script>
 </body>
+
 </html>

@@ -1,17 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-import istanbul from "vite-plugin-istanbul";
-
+import dts from 'unplugin-dts/vite'
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(),
-  ],
+  plugins: [react(), dts({ include: ['./src/index.tsx'] })],
   build: {
     lib: {
       entry: "src/index.tsx",
-      name: "RandomPicker",
-      fileName: "random-picker",
+      name: "MaputnikInline",
+      fileName: "maputnik-inline",
       formats: ["es"],
     },
     cssCodeSplit: false,

@@ -14,6 +14,7 @@ npm i --save maputnik-inline-plugin
 
 ```ts
 import { MaputnikControl } from "maputnik-inline-plugin";
+import 'maputnik-inline-plugin/maputnik-inline.css';
 
 const editorControl = new MaputnikControl();
 map.addControl(editorControl, "top-left");

@@ -7,7 +7,7 @@
   "scripts": {
     "copy-rtl-text-plugin": "mkdir -p public && cp -p node_modules/@mapbox/mapbox-gl-rtl-text/dist/mapbox-gl-rtl-text.js public/",
     "start": "npm run copy-rtl-text-plugin && vite",
-    "build": "npm run copy-rtl-text-plugin && tsc && vite build --mode=production",
+    "build": "npm run copy-rtl-text-plugin && tsc && vite build --mode=production && cp ./package.json.release ./dist/package.json",
     "build-desktop": "npm run copy-rtl-text-plugin && tsc && vite build --mode=desktop && cd desktop && make",
     "build-linux": "npm run copy-rtl-text-plugin && tsc && vite build --mode=desktop && cd desktop && make bin/linux/maputnik",
     "i18n:extract": "npx i18next-cli extract",
@@ -101,6 +101,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@microsoft/api-extractor": "^7.59.1",
     "@playwright/test": "^1.62.1",
     "@r2wc/react-to-web-component": "^2.1.1",
     "@stylistic/eslint-plugin": "^5.10.0",
@@ -144,6 +145,7 @@
     "stylelint-scss": "^7.2.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",
+    "unplugin-dts": "^1.1.0",
     "uuid": "^14.0.2",
     "vite": "^8.2.2",
     "vite-plugin-istanbul": "^9.0.1",

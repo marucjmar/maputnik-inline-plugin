@@ -1,4 +1,3 @@
-import "./favicon.ico";
 import "./styles/index.scss";
 import "./i18n";
 
