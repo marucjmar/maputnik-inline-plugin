@@ -1,5 +1,6 @@
 import { PlaywrightHelper } from "./playwright-helper";
 import { ModalDriver } from "./modal-driver";
+import emptyStyle from "../src/config/empty-style.json" with { type: "json" };
 
 const baseUrl = "http://localhost:8888/";
 const isMac = process.platform === "darwin";
@@ -39,6 +40,7 @@ export class MaputnikDriver {
         "example-style-with-zoom-7-and-center-0-51.json",
         "example-style-with-zoom-5-and-center-50-50.json",
         "access-token-style.json",
+        "grouped-layers-style.json",
       ];
       for (const fixture of styleFixtures) {
         await this.helper.given.interceptAndMockResponse({
@@ -55,6 +57,11 @@ export class MaputnikDriver {
         url: "https://www.glyph-server.com/*",
         response: ["Font 1", "Font 2", "Font 3"],
       });
+      await this.helper.given.interceptAndMockResponse({
+        method: "GET",
+        url: /cdn\.jsdelivr\.net\/.*\/empty-style\.json$/,
+        response: emptyStyle,
+      });
     },
   };
 
@@ -62,6 +69,18 @@ export class MaputnikDriver {
     ...this.helper.when,
 
     modal: this.modalDriver.when,
+
+    deleteLayer: async (id: string, control: "menu" | "trash" = "menu") => {
+      if (control === "trash") {
+        await this.helper.when.hover("layer-list-item:" + id);
+        await this.helper.when.click("layer-list-item:" + id + ":delete");
+        return;
+      }
+
+      await this.helper.when.click("layer-list-item:" + id);
+      await this.helper.when.click("skip-target-layer-editor");
+      await this.helper.when.click("menu-delete-layer");
+    },
 
     setStyle: async (
       styleProperties:
@@ -73,6 +92,7 @@ export class MaputnikDriver {
         | "font"
         | "zoom_7_center_0_51"
         | "access_tokens"
+        | "grouped_layers"
         | "",
       zoom?: number
     ) => {
@@ -85,6 +105,7 @@ export class MaputnikDriver {
         font: "example-style-with-fonts.json",
         zoom_7_center_0_51: "example-style-with-zoom-7-and-center-0-51.json",
         access_tokens: "access-token-style.json",
+        grouped_layers: "grouped-layers-style.json",
       };
 
       const url = new URL(baseUrl);
