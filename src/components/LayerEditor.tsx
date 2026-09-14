@@ -154,18 +154,40 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
     this.state = { editorGroups };
   }
 
+  shouldComponentUpdate(nextProps: LayerEditorInternalProps, nextState: LayerEditorState) {
+    if (this.state !== nextState) {
+      return true;
+    }
+
+    const layerErrors = (errors: MappedError[] | undefined, layerIndex: number) =>
+      (errors || [])
+        .filter(error => error.parsed?.type === "layer" && error.parsed.data.index === layerIndex)
+        .map(error => `${error.parsed?.data.key}:${error.parsed?.data.message}`)
+        .join("|");
+
+    return this.props.layer !== nextProps.layer ||
+      this.props.layerIndex !== nextProps.layerIndex ||
+      this.props.isFirstLayer !== nextProps.isFirstLayer ||
+      this.props.isLastLayer !== nextProps.isLastLayer ||
+      this.props.sources !== nextProps.sources ||
+      this.props.vectorLayers !== nextProps.vectorLayers ||
+      this.props.spec !== nextProps.spec ||
+      layerErrors(this.props.errors, this.props.layerIndex) !== layerErrors(nextProps.errors, nextProps.layerIndex) ||
+      this.props.t !== nextProps.t;
+  }
+
   static getDerivedStateFromProps(props: Readonly<LayerEditorInternalProps>, state: LayerEditorState) {
     const additionalGroups = { ...state.editorGroups };
+    let hasNewGroup = false;
 
     for (const group of getLayoutForType(props.layer.type, props.t)) {
       if (!(group.title in additionalGroups)) {
         additionalGroups[group.title] = true;
+        hasNewGroup = true;
       }
     }
 
-    return {
-      editorGroups: additionalGroups
-    };
+    return hasNewGroup ? { editorGroups: additionalGroups } : null;
   }
 
 

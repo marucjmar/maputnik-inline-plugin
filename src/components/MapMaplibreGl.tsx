@@ -105,24 +105,31 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
 
 
   shouldComponentUpdate(nextProps: MapMaplibreGlInternalProps, nextState: MapMaplibreGlState) {
-    let should = false;
-    try {
-      should = JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
-    } catch(_e) {
-      // no biggie, carry on
-    }
-    return should;
+    return this.props.mapStyle !== nextProps.mapStyle ||
+      this.props.mapView !== nextProps.mapView ||
+      this.props.inspectModeEnabled !== nextProps.inspectModeEnabled ||
+      this.props.highlightedLayer !== nextProps.highlightedLayer ||
+      this.props.options?.showTileBoundaries !== nextProps.options?.showTileBoundaries ||
+      this.props.options?.showCollisionBoxes !== nextProps.options?.showCollisionBoxes ||
+      this.props.options?.showOverdrawInspector !== nextProps.options?.showOverdrawInspector ||
+      this.state.map !== nextState.map ||
+      this.state.inspect !== nextState.inspect ||
+      this.state.geocoder !== nextState.geocoder ||
+      this.state.zoomControl !== nextState.zoomControl ||
+      this.state.zoom !== nextState.zoom;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: MapMaplibreGlInternalProps) {
     const map = this.state.map;
+    const styleChanged = prevProps.mapStyle !== this.props.mapStyle;
+    const inspectModeChanged = prevProps.inspectModeEnabled !== this.props.inspectModeEnabled;
 
-    const styleWithTokens = this.props.replaceAccessTokens(this.props.mapStyle);
     if (map) {
-      // Maplibre GL now does diffing natively so we don't need to calculate
-      // the necessary operations ourselves!
-      // We also need to update the style for inspect to work properly
-      map.setStyle(styleWithTokens, {diff: true});
+      if (styleChanged) {
+        const styleWithTokens = this.props.replaceAccessTokens(this.props.mapStyle);
+        // Maplibre GL performs the style diff natively.
+        map.setStyle(styleWithTokens, {diff: true});
+      }
       map.showTileBoundaries = this.props.options?.showTileBoundaries!;
       map.showCollisionBoxes = this.props.options?.showCollisionBoxes!;
       map.showOverdrawInspector = this.props.options?.showOverdrawInspector!;
@@ -133,10 +140,11 @@ class MapMaplibreGlInternal extends React.Component<MapMaplibreGlInternalProps, 
       }
     }
 
-    if(this.state.inspect && this.props.inspectModeEnabled !== this.state.inspect._showInspectMap) {
+    if(this.state.inspect && inspectModeChanged) {
       this.state.inspect.toggleInspector();
     }
-    if (this.state.inspect && this.props.inspectModeEnabled) {
+    if (this.state.inspect && this.props.inspectModeEnabled && (styleChanged || inspectModeChanged)) {
+      const styleWithTokens = this.props.replaceAccessTokens(this.props.mapStyle);
       this.state.inspect.setOriginalStyle(styleWithTokens);
       // In case the sources are the same, there's a need to refresh the style
       setTimeout(() => {

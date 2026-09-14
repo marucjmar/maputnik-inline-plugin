@@ -6,6 +6,7 @@
 - Serve the RTL text plugin from `@mapbox/mapbox-gl-rtl-text` instead of a pinned CDN URL, so its version is tracked in `package.json`
 - Exported HTML now loads MapLibre GL JS as an ES module, since v6 no longer ships a UMD bundle
 - _...Add new stuff here..._
+- Avoid unnecessary layer editor renders and map style updates when unrelated state changes
 
 ### 🐞 Bug fixes
 - The map's data listener now fires on tile loads again, so source and vector layer field autocompletion is populated
