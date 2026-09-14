@@ -1,7 +1,7 @@
 {
-  "name": "maputnik",
-  "version": "3.1.0",
-  "description": "A MapLibre GL visual style editor",
+  "name": "maputnik-inline-plugin",
+  "version": "0.0.0",
+  "description": "A MapLibre GL inline visual style editor",
   "type": "module",
   "main": "''",
   "scripts": {

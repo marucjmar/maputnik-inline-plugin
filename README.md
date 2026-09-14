@@ -1,142 +1,78 @@
-<img width="200" alt="Maputnik logo" src="https://cdn.jsdelivr.net/gh/maputnik/design/logos/logo-color.png" />
+# Maputnik Inline Plugin
 
-# Maputnik
-[![GitHub CI status](https://github.com/maplibre/maputnik/workflows/ci/badge.svg)][github-action-ci]
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
+Maputnik Inline Plugin embeds the [Maputnik](https://maplibre.org/maputnik/)
+style editor directly into a [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/)
+map. It is useful when users need to inspect and edit a map style without
+leaving the application that displays the map.
 
-[github-action-ci]: https://github.com/maplibre/maputnik/actions?query=workflow%3Aci
-[license]:          https://tldrlegal.com/license/mit-license
-
-A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
-targeted at developers and map designers.
+The plugin is distributed as an ES module and exposes a MapLibre control:
 
 
-## Usage
-
-- :link: Design your maps online at **<https://www.maplibre.org/maputnik/>** (all in local storage)
-- :link: Use the [Maputnik CLI](https://github.com/maplibre/maputnik/wiki/Maputnik-CLI) for local style development
-- In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
-
-```bash
-docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main
+```
+npm i --save maputnik-inline-plugin
 ```
 
-To see the CLI options (for example file watching or style serving) run:
-```bash
-docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main --help
+```ts
+import { MaputnikControl } from "maputnik-inline-plugin";
+
+const editorControl = new MaputnikControl();
+map.addControl(editorControl, "top-left");
+
+map.on("styledata", () => {
+   console.log("Style changed");
+});
+
+// map.removeControl(editorControl);
 ```
-You might need to mount a volume (`-v`) to be able to use these options.
 
-## Documentation
+## Features
 
-The documentation can be found in the [Wiki](https://github.com/maplibre/maputnik/wiki). You are welcome to collaborate!
+- Edit the style currently loaded by a MapLibre map.
+- Add the editor as a standard MapLibre control.
+- Select, reorder, duplicate, delete, hide, and edit layers.
+- Inspect the map and select layers from map features.
+- Keep the map and editor synchronized when the style changes.
 
-- :link: **Study the [Maputnik Wiki](https://github.com/maplibre/maputnik/wiki)**
-- :video_camera: Design a map from Scratch https://youtu.be/XoDh0gEnBQo
+## Requirements
 
-[![Design Map from Scratch](https://j.gifs.com/g5XMgl.gif)](https://youtu.be/XoDh0gEnBQo)
+- A MapLibre GL JS map.
+- A browser with ES module support.
+- The MapLibre GL JS stylesheet.
 
-## Develop
+The plugin currently targets MapLibre GL JS 6.x. The MapLibre version used by
+the host application should be compatible with the version used to build the
+plugin.
 
-Maputnik is written in typescript and is using [React](https://github.com/facebook/react) and [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/).
+## Build
 
-We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
-
-Check out our [Internationalization guide](./src/locales/README.md) for UI text related changes.
-
-### Getting Involved
-Join the #maplibre or #maputnik slack channel at OSMUS: get an invite at https://slack.openstreetmap.us/ Read the the below guide in order to get familiar with how we do things around here.
-
-Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
+Install dependencies and create the plugin bundle:
 
 ```bash
-# install dependencies
 npm install
-# start dev server
-npm run start
-```
-
-If you want Maputnik to be accessible externally use the [`--host` option](https://vitejs.dev/config/server-options.html#server-host):
-
-```bash
-# start externally accessible dev server
-npm run start -- --host 0.0.0.0
-```
-
-The build process will watch for changes to the filesystem, rebuild and autoreload the editor.
-
-```
 npm run build
 ```
 
-Lint the JavaScript code.
+The build writes the ES module and stylesheet to `dist/`. During development,
+run:
 
+The control reads the style from the map passed to `onAdd`. Changes made in the
+editor are applied to that MapLibre map, so the host application can continue
+to listen for `styledata` or other MapLibre events.
+
+To remove the editor, use the standard MapLibre control API:
+
+```js
+map.removeControl(editorControl);
 ```
-# run linter
+
+## Development checks
+
+```bash
 npm run lint
-npm run lint-css
-npm run sort-styles
-```
-
-## Tests
-
-### End-to-end tests
-
-For E2E testing we use [Playwright](https://playwright.dev/). The tests live in the [`e2e`](/e2e) directory and drive the app through the `MaputnikDriver` page object.
-
-The first time you run the tests, install the browser:
-
-```
-npx playwright install chromium
-```
-
-Playwright automatically starts the dev server (`npm run start`) for you, so you can just run:
-
-```
+npm run test-unit
 npm run test
 ```
 
-Some useful options:
-
-```
-# see the tests run in a headed browser
-npm run test -- --headed
-
-# run a single spec / filter by title
-npm run test -- e2e/map.spec.ts
-npm run test -- -g "zoom level"
-
-# open the interactive UI mode
-npx playwright test --ui
-```
-
-Running the E2E tests also produces a code-coverage report in `coverage/` (collected via istanbul instrumentation of the dev server).
-
-### Unit & component tests
-
-Unit tests and component tests run with [Vitest](https://vitest.dev/); component tests (`*.browser.test.tsx`) use Vitest's browser mode with the Playwright provider.
-
-```
-npm run test-unit
-```
-
-## Release process
-
-1. Review [`CHANGELOG.md`](/CHANGELOG.md)
-   - Double-check that all changes included in the release are appropriately documented.
-   - To-be-released changes should be under the "main" header.
-   - Commit any final changes to the changelog.
-2. Run [Create bump version PR](https://github.com/maplibre/maputnik/actions/workflows/create-bump-version-pr.yml) by manual workflow dispatch and set the version number in the input. This will create a PR that changes the changelog and `package.json` file to review and merge.
-3. Once merged, an automatic process will kick in and creates a GitHub release and uploads release assets.
-
-
-## Sponsors
-
-Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)**. This project would not be possible without these commercial and individual sponsors.
-You can see this file's history for previous sponsors of the original Maputnik repo.
-Read more about the MapLibre Sponsorship Program at https://maplibre.org/sponsors/.
-
 ## License
 
-Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and Maplibre contributors.
-As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by other map studios and make your own decisions for a good style editor.
+Maputnik Inline Plugin is licensed under [MIT](./LICENSE).
