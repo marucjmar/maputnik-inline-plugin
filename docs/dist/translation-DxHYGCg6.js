@@ -122,7 +122,7 @@ var e = "בסיס", t = "כיוון", n = "ביטול", r = "מרכז", i = "ס�
 	"No global state variables defined. Add variables to create reusable values in your style.": "לא הוגדרו משתני מצב גלובלי. הוסף משתנים כדי ליצור ערכים שניתן לעשות בהם שימוש חוזר בסטייל שלך.",
 	Open: O,
 	"Open a local JSON style from your computer.": "פתיחת סטייל JSON מקומי מהמחשב שלך.",
-	"Open Layers (experimental)": "Open Layers (experimental)",
+	"OpenLayers (experimental)": "OpenLayers (experimental)",
 	"Open local Style": "פתיחת סטייל מקומי",
 	"Open modal": "פתיחת חלונית",
 	"Open one of the publicly available styles to start from.": "פתיחת אחד הסטייליםפ הציבוריים על מנת להתחיל מהם.",

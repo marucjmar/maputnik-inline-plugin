@@ -122,7 +122,7 @@ var e = "ベース", t = "方位", n = "キャンセル", r = "中央", i = "閉
 	"No global state variables defined. Add variables to create reusable values in your style.": "グローバルステート変数が定義されていません。スタイルで再利用可能な値を作成するには、変数を追加してください。",
 	Open: O,
 	"Open a local JSON style from your computer.": "コンピュータからローカルJSONスタイルを開きます。",
-	"Open Layers (experimental)": "Open Layers (実験的)",
+	"OpenLayers (experimental)": "OpenLayers (実験的)",
 	"Open local Style": "ローカルスタイルを開く",
 	"Open modal": "モーダルを開く",
 	"Open one of the publicly available styles to start from.": "公開スタイルを選んで開始しましょう。",

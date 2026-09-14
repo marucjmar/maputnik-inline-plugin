@@ -122,7 +122,7 @@ var e = "基础", t = "方位", n = "取消", r = "中心", i = "关闭", a = "�
 	"No global state variables defined. Add variables to create reusable values in your style.": "未定义全局状态变量。添加变量以在样式中创建可重用的值。",
 	Open: O,
 	"Open a local JSON style from your computer.": "从您的计算机打开本地JSON样式。",
-	"Open Layers (experimental)": "开放图层（实验性）",
+	"OpenLayers (experimental)": "OpenLayers（实验性）",
 	"Open local Style": "打开本地样式",
 	"Open modal": "打开模态框",
 	"Open one of the publicly available styles to start from.": "打开一个公开可用的样式开始。",

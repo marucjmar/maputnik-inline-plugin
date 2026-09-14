@@ -1,7 +1,7 @@
 {
   "name": "maputnik-inline-plugin",
-  "version": "0.0.0-rc.1",
-  "description": "A MapLibre GL inline visual style editor",
+  "version": "0.0.0",
+  "description": "A MapLibre GL inline Maputnik visual style editor",
   "type": "module",
   "main": "maputnik-inline.js",
   "types": "index.d.ts",
