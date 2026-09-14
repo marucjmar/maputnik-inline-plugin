@@ -11,6 +11,15 @@
   position: absolute;
 }
 
+.maputnik-layer-editor-container{
+  z-index: 3;
+  display: flex;
+  top: 0;
+  font-family: vars.$font-family;
+  pointer-events: all;
+  height: 100%;
+}
+
 //APP LAYOUT
 .maputnik-layout {
   font-family: vars.$font-family;
@@ -31,6 +40,7 @@
   &-list {
     width: 200px;
     background-color: vars.$color-black;
+    overflow: auto;
   }
 
   &-drawer {
@@ -38,6 +48,7 @@
     background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
+    overflow: auto;
   }
 
   &-code-editor {
@@ -45,6 +56,7 @@
     background-color: vars.$color-black;
     // scroll-container is position: absolute
     position: relative;
+    overflow: auto;
   }
 
   &-bottom {

@@ -48,3 +48,4 @@ public
 # Window metadata files
 /desktop/winres/winres.json
 /desktop/*.syso
+/test

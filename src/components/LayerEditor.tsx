@@ -4,7 +4,7 @@ import { Accordion } from "react-accessible-accordion";
 import { MdMoreVert } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { type BackgroundLayerSpecification, type LayerSpecification, type SourceSpecification } from "maplibre-gl";
-import { v8 } from "@maplibre/maplibre-gl-style-spec";
+import { latest, v8 } from "@maplibre/maplibre-gl-style-spec";
 
 import { FieldJson } from "./FieldJson";
 import { FilterEditor } from "./FilterEditor";
@@ -276,7 +276,7 @@ class LayerEditorInternal extends React.Component<LayerEditorInternalProps, Laye
           errors={errorData}
           layer={this.props.layer}
           groupFields={fields!}
-          spec={this.props.spec}
+          spec={latest}
           onChange={this.changeProperty.bind(this)}
         />;
       case "jsoneditor":

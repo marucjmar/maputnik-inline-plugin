@@ -16,6 +16,7 @@
 @use 'popup';
 @use 'map';
 @use 'react-collapse';
+@use 'maplibre';
 
 .maputnik-layout {
   height: 100vh;
