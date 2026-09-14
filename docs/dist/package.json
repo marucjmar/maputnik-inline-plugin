@@ -1,0 +1,18 @@
+{
+  "name": "maputnik-inline-plugin",
+  "version": "0.0.0-rc.1",
+  "description": "A MapLibre GL inline visual style editor",
+  "type": "module",
+  "main": "maputnik-inline.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marucjmar/maputnik-inline-plugin"
+  },
+  "author": "Marcin",
+  "license": "MIT",
+  "homepage": "https://github.com/marucjmar/maputnik-inline-plugin#readme",
+  "peerDependencies": {
+    "maplibre-gl": ">=2.0.0"
+  }
+}
