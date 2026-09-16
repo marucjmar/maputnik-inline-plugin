@@ -7,20 +7,22 @@ import { type IControl, type Map } from "maplibre-gl";
 
 const MaputnikLayerEditorWc = r2wc(MaputnikLayerEditor, {
   props: {
-    map: 'function',
+    getMapInstance: 'method',
   },
 });
 
 // Register as HTML element
 customElements.define("maputnik-layer-editor", MaputnikLayerEditorWc);
 
+export type MaputnikLayerEditorElement = HTMLElement & {
+  getMapInstance: (self: MaputnikLayerEditorElement) => Map;
+};
+
 export class MaputnikControl implements IControl {
   private _map: Map | undefined;
   private _container: HTMLElement | undefined;
 
     public onAdd(map: Map): HTMLElement {
-      //@ts-ignore
-      window.map = () => map;
       this._map = map;
       this._container = document.createElement('div');
 
@@ -30,12 +32,12 @@ export class MaputnikControl implements IControl {
         }
 
         map.getContainer().classList.add("style-edit-mode");
-        const layerEditor = document.createElement("maputnik-layer-editor");
+        const layerEditor = document.createElement("maputnik-layer-editor") as MaputnikLayerEditorElement;
 
         layerEditor.style.height = map.getContainer().clientHeight + 'px';
         layerEditor.style.display = "block";
         layerEditor.setAttribute("id", "layer-editor");
-        layerEditor.setAttribute("map", "map");
+        layerEditor.getMapInstance = () => map;
         
         this._container.appendChild(layerEditor);
       });

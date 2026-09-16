@@ -25,7 +25,6 @@ import type {
 import './styles/index.scss';
 import './maplibregl.css';
 
-// --- Zduplikowane z MapMaplibreGlInternal, celowo, żeby go nie ruszać ---
 function buildInspectStyle(
   originalMapStyle: StyleSpecification,
   coloredLayers: HighlightedLayer[],
@@ -59,8 +58,8 @@ function buildInspectStyle(
 // -------------------------------------------------------------------
 
 type Props = {
-  map: () => Map;
-  inspectModeEnabled?: boolean; // opcjonalnie sterowane z zewnątrz
+  getMapInstance: (self: MaputnikLayerEditor) => Map;
+  inspectModeEnabled: boolean;
 };
 
 type State = {
@@ -72,7 +71,6 @@ type State = {
   vectorLayers: { [key: string]: any };
   spec: any;
   errors: MappedError[];
-  // --- nowy stan związany z inspektorem ---
   inspect: MaplibreInspect | null;
   inspectModeEnabled: boolean;
 };
@@ -82,10 +80,11 @@ export class MaputnikLayerEditor extends React.Component<Props, State> {
   private map: Map;
   private popupRoot = document.createElement("div");
   private reactRoot = createRoot(this.popupRoot);
+  private initialized = false;
 
   constructor(props: Props) {
     super(props);
-    this.map = props.map();
+    this.map = props.getMapInstance(this);
 
     this.state = {
       mapStyle: this.map.getStyle() as StyleSpecificationWithId,
@@ -99,10 +98,14 @@ export class MaputnikLayerEditor extends React.Component<Props, State> {
     };
   }
 
+  setMapInstance(map: Map) {
+    this.map = map;
+
+    this.tryInit();
+  }
+
   componentDidMount() {
-    this.attachMapListeners();
-    this.syncFromMap();
-    this.initInspect();
+    this.tryInit();
   }
 
   componentWillUnmount() {
@@ -114,10 +117,18 @@ export class MaputnikLayerEditor extends React.Component<Props, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    // reaguj na zmianę zaznaczonej warstwy -> podświetlenie w inspektorze
     if (prevState.selectedLayerIndex !== this.state.selectedLayerIndex) {
       this.refreshInspectHighlight();
     }
+  }
+
+  private tryInit(): void {
+    if (this.initialized) return;
+
+    this.initialized = true;
+    this.attachMapListeners();
+    this.syncFromMap();
+    this.initInspect();
   }
 
   // ---------- INSPECTOR ----------
@@ -299,8 +310,6 @@ export class MaputnikLayerEditor extends React.Component<Props, State> {
   };
 
   private async fetchSources() {
-    // tutaj możesz przenieść istniejące fetchSources()
-    // z App
   }
 
   render() {

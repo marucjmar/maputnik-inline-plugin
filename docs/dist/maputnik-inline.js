@@ -107603,8 +107603,9 @@ var Swe = Nn(class extends L.Component {
 	map;
 	popupRoot = document.createElement("div");
 	reactRoot = (0, _n.createRoot)(this.popupRoot);
+	initialized = !1;
 	constructor(e) {
-		super(e), this.map = e.map(), this.state = {
+		super(e), this.map = e.getMapInstance(this), this.state = {
 			mapStyle: this.map.getStyle(),
 			selectedLayerIndex: 0,
 			sources: {},
@@ -107615,14 +107616,20 @@ var Swe = Nn(class extends L.Component {
 			inspectModeEnabled: e.inspectModeEnabled ?? !1
 		};
 	}
+	setMapInstance(e) {
+		this.map = e, this.tryInit();
+	}
 	componentDidMount() {
-		this.attachMapListeners(), this.syncFromMap(), this.initInspect();
+		this.tryInit();
 	}
 	componentWillUnmount() {
 		this.detachMapListeners(), this.state.inspect?._popup?.remove(), this.state.inspect && this.map.removeControl(this.state.inspect);
 	}
 	componentDidUpdate(e, t) {
 		t.selectedLayerIndex !== this.state.selectedLayerIndex && this.refreshInspectHighlight();
+	}
+	tryInit() {
+		this.initialized || (this.initialized = !0, this.attachMapListeners(), this.syncFromMap(), this.initInspect());
 	}
 	initInspect() {
 		let e = new mO({ closeOnClick: !1 }), t = new ote({
@@ -107757,17 +107764,17 @@ var Swe = Nn(class extends L.Component {
 			})]
 		});
 	}
-}, { props: { map: "function" } });
+}, { props: { getMapInstance: "method" } });
 customElements.define("maputnik-layer-editor", Swe);
 var Cwe = class {
 	_map;
 	_container;
 	onAdd(e) {
-		return window.map = () => e, this._map = e, this._container = document.createElement("div"), this._map.once("load", () => {
+		return this._map = e, this._container = document.createElement("div"), this._map.once("load", () => {
 			if (!this._container) return;
 			e.getContainer().classList.add("style-edit-mode");
 			let t = document.createElement("maputnik-layer-editor");
-			t.style.height = e.getContainer().clientHeight + "px", t.style.display = "block", t.setAttribute("id", "layer-editor"), t.setAttribute("map", "map"), this._container.appendChild(t);
+			t.style.height = e.getContainer().clientHeight + "px", t.style.display = "block", t.setAttribute("id", "layer-editor"), t.getMapInstance = () => e, this._container.appendChild(t);
 		}), this._container;
 	}
 	onRemove() {
